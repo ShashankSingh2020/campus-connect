@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Campus Connect | Student Job Board</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .navbar-brand { font-weight: 700; letter-spacing: 1px; }
+        .card { transition: transform 0.2s; border: none; border-radius: 15px; }
+        .card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important; }
+        .hero-section { background: #007bff; color: white; padding: 60px 0; margin-bottom: 30px; }
+    </style>
+</head>
+<body class="bg-light">
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
+        <div class="container">
+            <a class="navbar-brand" href="/">🎓 CAMPUS CONNECT</a>
+            <div class="d-flex">
+                <a href="/admin" class="btn btn-outline-light btn-sm">Admin Login</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="hero-section text-center">
+        <div class="container">
+            <h1 class="display-4">Find Your Dream Internship</h1>
+            <p class="lead">Exclusive job portal for 4th-year students of 2026 Batch</p>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row justify-content-center mb-5">
+            <div class="col-md-8">
+                <form method="GET" action="" class="input-group input-group-lg shadow-sm">
+                    <input type="text" name="search" class="form-control" placeholder="Search by job title (e.g. SDE, Data Analyst)..." value="{{ query|default:'' }}">
+                    <button class="btn btn-primary px-4" type="submit">Search Jobs</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="row">
+            {% for job in jobs %}
+            <div class="col-md-6 col-lg-4 mb-4">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between">
+                            <span class="badge bg-soft-primary text-primary mb-2" style="background-color: #e7f1ff;">{{ job.get_category_display }}</span>
+                            <small class="text-muted">{{ job.posted_at|timesince }} ago</small>
+                        </div>
+                        <h5 class="card-title fw-bold text-dark">{{ job.title }}</h5>
+                        <h6 class="card-subtitle mb-3 text-secondary">{{ job.company_name }}</h6>
+
+                        <div class="mb-3">
+                            <div class="text-muted small">📍 {{ job.location }}</div>
+                            <div class="text-success fw-bold">💰 {{ job.salary_package }}</div>
+                        </div>
+
+                        <p class="card-text text-truncate text-muted" style="max-width: 100%;">
+                            {{ job.description }}
+                        </p>
+
+                        <div class="d-grid mt-4">
+                            <a href="{% url 'apply' job.id %}" class="btn btn-primary">Apply Now</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-12 text-center py-5">
+                <h3 class="text-muted">No jobs found.</h3>
+                <p>Try searching for a different keyword or check back later!</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <footer class="py-4 mt-5 bg-white border-top">
+        <div class="container text-center">
+            <p class="text-muted mb-0">© 2026 Campus Connect Project for Placement Portfolio.</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
